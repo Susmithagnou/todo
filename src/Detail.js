@@ -10,7 +10,8 @@ import {
     useColorScheme,
     View,
     TouchableOpacity,
-    FlatList
+    FlatList,
+    Alert
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
@@ -28,26 +29,39 @@ const Detail = () => {
     useEffect(() => {
         getItem();
     }, [])
+   const Delete = (id) => {
+        var lists = list
+        lists.splice(id, 1);
+        onChangeList( lists )
+        AsyncStorage.setItem('ListsData', JSON.stringify(lists));
+        Alert.alert(
+            'Delete',
+            'To Do Item deleted Sucessfully',
+        );
+    }
     return (
         <SafeAreaView>
 
             <Text style={{ fontSize: 20, color: 'black', textAlign: 'center', marginTop: 20 }}>Todo List</Text>
             <View style={{ marginTop: 20 }}>
-                <View style={{
-                    borderWidth: 0.5,
-                    justifyContent: 'space-evenly',
-                    backgroundColor: 'white',
-                    width: '90%',
-                    alignSelf: 'center',
-                    paddingVertical: 10
-                }}>
+                
                     <FlatList
+                   style={{
+                        
+                    }}
                         data={list}
                         keyExtractor={(item, index) => index}
                         renderItem={({ item, index }) => {
                             let parseditem = JSON.parse(item)
                             // console.log(parseditem)
-                            return (<View>
+                            return (
+                            <View style={{
+                                borderWidth: 0.5,
+                        marginTop:10,
+                                backgroundColor: 'white',
+                                width: '90%',
+                                alignSelf: 'center',
+                                paddingVertical: 10}}>
                                 <Text style={styles.headertext}>S NO.:{index + 1}</Text>
                                 <Text style={styles.headertext}>Name:{parseditem.name}</Text>
                                 <Text style={styles.headertext}>Project:{parseditem.project}</Text>
@@ -57,7 +71,7 @@ const Detail = () => {
                                 <Text style={styles.headertext}>Target Date:{moment(parseditem.T_date).format('DD/MM/YY')}</Text>
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 }}>
                                 <ButtonComponent 
-                                OnPress={() => alert('hii')}
+                                OnPress={() => Delete()}
                                 ButtonName={'Delete'}
                                 BorderWidth={.5}
                                 PaddingHorizontal= {30}
@@ -82,9 +96,9 @@ const Detail = () => {
                             </View>
                             )
                         }}
-
+ 
                     />
-                </View>
+               
             </View>
         </SafeAreaView>
     );
