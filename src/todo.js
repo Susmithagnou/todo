@@ -17,6 +17,7 @@ import moment from 'moment';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ButtonComponent from './Components/ButtonComponent';
 const Todo = (props) => {
     const [name, onChangeName] = React.useState(null);
     const [email, onChangeEmail] = React.useState(null);
@@ -99,6 +100,7 @@ const Todo = (props) => {
             onChangeT_date(new Date());
             let Lists = await AsyncStorage.getItem('ListsData');
             onChangeList(JSON.parse(Lists))
+            console.log('final', Lists)
             Alert.alert(
                 'Successful',
                 'To Do Item Saved Sucessfully',
@@ -231,16 +233,26 @@ const Todo = (props) => {
                 <Text>In-progress</Text>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 }}>
-                <TouchableOpacity
-                     onPress={() => onTextChangeDetectTag()}
-                    style={{ borderWidth: 0.5, paddingHorizontal: 30, paddingVertical: 7, borderRadius: 7 }}>
-                    <Text style={{ backgroundColor: '#42f23f', fontWeight: 'bold' }}>Save</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                     onPress={()=>props.navigation.navigate('Detail')}
-                    style={{ borderWidth: 0.5, paddingHorizontal: 30, paddingVertical: 7, borderRadius: 7 }}>
-                    <Text style={{ backgroundColor: '#f757dd', fontWeight: 'bold' }}>View</Text>
-                </TouchableOpacity>
+                <ButtonComponent
+                OnPress={() => onTextChangeDetectTag()}
+                ButtonName={'Save'}
+                BorderWidth={.5}
+                PaddingHorizontal= {30}
+                PaddingVertical={7}
+                BorderRadius={7}
+                TextBackgroundColor={'#42f23f'}
+                FontWeight={'bold'}
+                />
+                <ButtonComponent
+                OnPress={() => props.navigation.navigate('Detail')}
+                ButtonName={'View'}
+                BorderWidth={.5}
+                PaddingHorizontal= {30}
+                PaddingVertical={7}
+                BorderRadius={7}
+                TextBackgroundColor={'#f757dd'}
+                FontWeight={'bold'}
+                />
             </View>
         </SafeAreaView>
     );
