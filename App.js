@@ -31,7 +31,7 @@ const App: () => Node = () => {
         <Stack.Screen
           name="todo"
           component={todo}
-          options={{ title: 'todo' }}
+          options={{ title: 'todo' ,headerShown:false}}
         />
         
       </Stack.Navigator>
