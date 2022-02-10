@@ -22,15 +22,19 @@ const ButtonComponent = (props) => {
 console.log('props', props)
     return (
        <TouchableOpacity
-       style={{ borderWidth: props.BorderWidth, 
+       style={{
+        borderWidth: props.BorderWidth, 
         paddingHorizontal: props.PaddingHorizontal, 
         paddingVertical: props.PaddingVertical,
-         borderRadius: props.BorderRadius }}
+        borderRadius: props.BorderRadius ,
+        backgroundColor:props.Background
+        }}
          onPress={()=>props.OnPress()}
          >
            <Text style={{
                 backgroundColor: props.TextBackgroundColor, 
-                fontWeight: props.FontWeight 
+                fontWeight: props.FontWeight ,
+                color:props.TextColor
            }} >{props.ButtonName}</Text>
        </TouchableOpacity>
     );

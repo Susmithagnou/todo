@@ -17,6 +17,7 @@ import moment from 'moment';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ButtonComponent from './Components/ButtonComponent';
 const Detail = () => {
     const [list, onChangeList] = React.useState([])
     const getItem = async () => {
@@ -54,6 +55,30 @@ const Detail = () => {
                                 <Text style={styles.headertext}>Status:{parseditem.status}</Text>
                                 <Text style={styles.headertext}>Start Date:{moment(parseditem.S_date).format('DD/MM/YY')}</Text>
                                 <Text style={styles.headertext}>Target Date:{moment(parseditem.T_date).format('DD/MM/YY')}</Text>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 }}>
+                                <ButtonComponent 
+                                OnPress={() => alert('hii')}
+                                ButtonName={'Delete'}
+                                BorderWidth={.5}
+                                PaddingHorizontal= {30}
+                                PaddingVertical={7}
+                                BorderRadius={7}
+                                Background={'red'}
+                                FontWeight={'bold'}
+                                TextColor={'#fff'}
+                                />
+                                <ButtonComponent 
+                                OnPress={() => alert('hii')}
+                                ButtonName={'Edit'}
+                                BorderWidth={.5}
+                                PaddingHorizontal= {30}
+                                PaddingVertical={7}
+                                BorderRadius={7}
+                                Background={'blue'}
+                                FontWeight={'bold'}
+                                TextColor={'#fff'}
+                                />
+                                </View>
                             </View>
                             )
                         }}
