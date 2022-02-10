@@ -9,21 +9,15 @@ import {
     TextInput,
     useColorScheme,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {
-    Colors,
-    DebugInstructions,
-    Header,
-    LearnMoreLinks,
-    ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const Todo = () => {
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const Todo = (props) => {
     const [name, onChangeName] = React.useState(null);
     const [email, onChangeEmail] = React.useState(null);
     const [mob, onChangeMob] = React.useState(null);
@@ -34,6 +28,85 @@ const Todo = () => {
     const [t_open, onChangeT_open] = React.useState(false);
     const [t_date, onChangeT_date] = React.useState(new Date());
     const [status, onChangeStatus] = React.useState('planned');
+    const [list,onChangeList]=React.useState([]);
+    const onTextChangeDetectTag = async() => {
+        const emailType = /^\w+([\D.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+        const numberType = /^[0-9\b]+$/;
+        const alphaType = /^[a-zA-Z\w]+/;
+        const alphanumType = /^[a-zA-Z0-9]+$/;
+        console.log("list",list)
+        let listarr=list;
+        if (!(name.length > 3 && name.length < 20)) {
+            Alert.alert(
+                'Validation Error',
+                ' Name Should 3-20 Chars and Numbers only',
+            );
+        } else if (email === '' || emailType.test(email) === false) {
+            Alert.alert(
+                'Validation Error',
+                'Enter valid email',
+            );
+        }
+        else if (mob === '' || mob.length < 10) {
+            Alert.alert(
+                'Validation Error',
+                'Mobile Number must be 10 digits',
+            );
+        }
+        else if (numberType.test(mob) === false) {
+            Alert.alert(
+                'Validation Error',
+                'Enter valid Mobile Number',
+            );
+        }
+        else if (!(project.length > 3 && project.length < 20)) {
+            Alert.alert(
+                'Validation Error',
+                'Project Should Name 3-20 Chars and Numbers only',
+            );
+        }
+        else if (!(alphanumType.test(project))) {
+            Alert.alert(
+                'Validation Error',
+                'Special Character Not allowed',
+            );
+        }
+        else if (!(task.length > 3 && task.length < 30)) {
+            Alert.alert(
+                'Validation Error',
+                'Task Should 3-30 Chars and Numbers only',
+            );
+        }
+        else {
+            var item = JSON.stringify({
+                name: name,
+                email: email,
+                mob: mob,
+                project: project,
+                task: task,
+                s_date: s_date,
+                t_date: t_date,
+                status: status,
+            })
+            listarr.push(item)
+            AsyncStorage.setItem('ListsData', JSON.stringify(listarr));
+            onChangeName(null);
+            onChangeEmail(null);
+            onChangeMob(null);
+            onChangeProject(null);
+            onChangeTask(null);
+            onChangeS_date(new Date());
+            onChangeT_date(new Date());
+            let Lists = await AsyncStorage.getItem('ListsData');
+            onChangeList({ list: JSON.parse(Lists) })
+            Alert.alert(
+                'Successful',
+                'To Do Item Saved Sucessfully',
+            );
+        }
+        // console.log(item)
+    
+    }
     return (
         <SafeAreaView>
             <View>
@@ -159,39 +232,21 @@ const Todo = () => {
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 }}>
                 <TouchableOpacity
-                    // onPress={() => this.onsubmit()}
+                     onPress={() => onTextChangeDetectTag()}
                     style={{ borderWidth: 0.5, paddingHorizontal: 30, paddingVertical: 7, borderRadius: 7 }}>
                     <Text style={{ backgroundColor: '#42f23f', fontWeight: 'bold' }}>Save</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    // onPress={() => this.filterdata()}
+                     onPress={()=>props.navigation.navigate('Detail')}
                     style={{ borderWidth: 0.5, paddingHorizontal: 30, paddingVertical: 7, borderRadius: 7 }}>
                     <Text style={{ backgroundColor: '#f757dd', fontWeight: 'bold' }}>View</Text>
                 </TouchableOpacity>
-            </View>
-            <View style={{ marginTop: 20 }}>
-                <View style={{ flexDirection: 'row', borderWidth: 0.5, justifyContent: 'space-evenly' }}>
-                    <Text style={styles.headertext}>S NO.</Text>
-                    <Text style={styles.headertext}>Name</Text>
-                    <Text style={styles.headertext}>Project</Text>
-                    <Text style={styles.headertext}>Task</Text>
-                    <Text style={styles.headertext}>Status</Text>
-                    <Text style={styles.headertext}>Start Date</Text>
-                    <Text style={styles.headertext}>Target Date</Text>
-                    <Text style={styles.headertext}>Edit/Delete</Text>
-
-                </View>
             </View>
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    headertext: {
-        fontSize: 11,
-        borderRightWidth: 0.5,
-        textAlign: 'center',
-        justifyContent: 'center'
-    }
+   
 });
 export default Todo;
