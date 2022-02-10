@@ -98,7 +98,7 @@ const Todo = (props) => {
             onChangeS_date(new Date());
             onChangeT_date(new Date());
             let Lists = await AsyncStorage.getItem('ListsData');
-            onChangeList({ list: JSON.parse(Lists) })
+            onChangeList(JSON.parse(Lists))
             Alert.alert(
                 'Successful',
                 'To Do Item Saved Sucessfully',
