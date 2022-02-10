@@ -19,7 +19,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 
 const TextinputComponent = (props) => {
-console.log('props', props)
+// console.log('props', props)
     return (
             <TextInput
              style={{ 

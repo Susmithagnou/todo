@@ -19,7 +19,8 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ButtonComponent from './Components/ButtonComponent';
-const Detail = () => {
+import { useLinkProps } from '@react-navigation/native';
+const Detail = (props) => {
     const [list, onChangeList] = React.useState([])
     const getItem = async () => {
         let Lists = await AsyncStorage.getItem('ListsData');
@@ -82,7 +83,7 @@ const Detail = () => {
                                 TextColor={'#fff'}
                                 />
                                 <ButtonComponent 
-                                OnPress={() => alert('hii')}
+                                OnPress={() => props.navigation.navigate('todo',{type:'Edit',item:parseditem,id:index})}
                                 ButtonName={'Edit'}
                                 BorderWidth={.5}
                                 PaddingHorizontal= {30}

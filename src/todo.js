@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{useEffect}from 'react';
 
 import {
     SafeAreaView,
@@ -31,7 +31,9 @@ const Todo = (props) => {
     const [t_date, onChangeT_date] = React.useState(new Date());
     const [status, onChangeStatus] = React.useState('planned');
     const [list,onChangeList]=React.useState([]);
-    const onTextChangeDetectTag = async() => {
+    const [id,onChangeId]=React.useState();
+    const[type,onChangeType]=React.useState('add')
+    const onSave = async() => {
         const emailType = /^\w+([\D.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
         const numberType = /^[0-9\b]+$/;
         const alphaType = /^[a-zA-Z\w]+/;
@@ -80,40 +82,99 @@ const Todo = (props) => {
             );
         }
         else {
-            var item = JSON.stringify({
-                name: name,
-                email: email,
-                mob: mob,
-                project: project,
-                task: task,
-                s_date: s_date,
-                t_date: t_date,
-                status: status,
-            })
-            listarr.push(item)
-            AsyncStorage.setItem('ListsData', JSON.stringify(listarr));
-            onChangeName(null);
-            onChangeEmail(null);
-            onChangeMob(null);
-            onChangeProject(null);
-            onChangeTask(null);
-            onChangeS_date(new Date());
-            onChangeT_date(new Date());
-            let Lists = await AsyncStorage.getItem('ListsData');
-            onChangeList(JSON.parse(Lists))
-            console.log('final', Lists)
-            Alert.alert(
-                'Successful',
-                'To Do Item Saved Sucessfully',
-            );
+            if (type==='Edit') {
+                listarr.splice(id, 1);
+                var item = JSON.stringify({
+                    name: name,
+                    email: email,
+                    mob: mob,
+                    project: project,
+                    task: task,
+                    s_date: s_date,
+                    t_date: t_date,
+                    status: status,
+                })
+                listarr.push(item)
+                AsyncStorage.setItem('ListsData', JSON.stringify(listarr));
+                onChangeName(null);
+                onChangeEmail(null);
+                onChangeMob(null);
+                onChangeProject(null);
+                onChangeTask(null);
+                onChangeS_date(new Date());
+                onChangeT_date(new Date());
+                let Lists = await AsyncStorage.getItem('ListsData');
+                onChangeList(JSON.parse(Lists))
+                Alert.alert(
+                    'Successful',
+                    'To Do Item Edited Sucessfully',
+                );
+                props.navigation.navigate('Detail');
+             
+            } else {
+                var item = JSON.stringify({
+                    name: name,
+                    email: email,
+                    mob: mob,
+                    project: project,
+                    task: task,
+                    s_date: s_date,
+                    t_date: t_date,
+                    status: status,
+                })
+                listarr.push(item)
+                AsyncStorage.setItem('ListsData', JSON.stringify(listarr));
+                onChangeName(null);
+                onChangeEmail(null);
+                onChangeMob(null);
+                onChangeProject(null);
+                onChangeTask(null);
+                onChangeS_date(new Date());
+                onChangeT_date(new Date());
+                let Lists = await AsyncStorage.getItem('ListsData');
+                onChangeList(JSON.parse(Lists))
+                console.log('final', Lists)
+                Alert.alert(
+                    'Successful',
+                    'To Do Item Saved Sucessfully',
+                );  
+            }
+            
         }
         // console.log(item)
     
     }
+    useEffect(() => {  
+       console.log('props',props.route.params) 
+       if (props.route.params) {
+        // console.log('props',props.route.params) 
+        if (props.route.params.type==='Edit') {
+            edit()
+           }  
+       }
+       
+    },[props.route.params])
+    const edit =()=>{
+        let item=props.route.params.item
+        onChangeType('Edit');
+        onChangeId(props.route.params.id)
+        onChangeName(item.name);
+            onChangeEmail(item.email);
+            onChangeMob(item.mob);
+            onChangeProject(item.project);
+            onChangeTask(item.task);
+            onChangeS_date(new Date(item.s_date));
+            onChangeT_date(new Date(item.s_date));
+            onChangeStatus(item.status)
+    }
+    
     return (
+       
         <SafeAreaView>
             <View>
-                <Text style={{ fontSize: 20, color: 'black', textAlign: 'center', marginTop: 20 }}>Todo List</Text>
+                <Text style={{ fontSize: 20, color: 'black', textAlign: 'center', marginTop: 20 }}>{
+                    type==="Edit"? ('Edit ') : ('Add ')}
+   Item to Todo List</Text>
                 <TextinputComponent
                 placeholder={'Enter Your Name(3-20 chars only)'}
                 value={name}
@@ -241,7 +302,7 @@ const Todo = (props) => {
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 }}>
                 <ButtonComponent
-                OnPress={() => onTextChangeDetectTag()}
+                OnPress={() => onSave()}
                 ButtonName={'Save'}
                 BorderWidth={.5}
                 PaddingHorizontal= {30}
@@ -250,7 +311,8 @@ const Todo = (props) => {
                 TextBackgroundColor={'#42f23f'}
                 FontWeight={'bold'}
                 />
-                <ButtonComponent
+                {type==="Edit"?(null):(
+                    <ButtonComponent
                 OnPress={() => props.navigation.navigate('Detail')}
                 ButtonName={'View'}
                 BorderWidth={.5}
@@ -260,6 +322,8 @@ const Todo = (props) => {
                 TextBackgroundColor={'#f757dd'}
                 FontWeight={'bold'}
                 />
+                )}
+                
             </View>
         </SafeAreaView>
     );
