@@ -39,6 +39,7 @@ const Detail = (props) => {
             'Delete',
             'To Do Item deleted Sucessfully',
         );
+        getItem
     }
     return (
         <SafeAreaView>
