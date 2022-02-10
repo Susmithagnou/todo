@@ -18,6 +18,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ButtonComponent from './Components/ButtonComponent';
+import TextinputComponent from './Components/TextinputComponent';
 const Todo = (props) => {
     const [name, onChangeName] = React.useState(null);
     const [email, onChangeEmail] = React.useState(null);
@@ -113,38 +114,44 @@ const Todo = (props) => {
         <SafeAreaView>
             <View>
                 <Text style={{ fontSize: 20, color: 'black', textAlign: 'center', marginTop: 20 }}>Todo List</Text>
-                <TextInput
-                    style={{ marginTop: 10, width: '95%', backgroundColor: 'white', alignSelf: 'center', borderWidth: 0.5 }}
-                    placeholder="Enter Your Name(3-20 chars only)"
-                    value={name}
-                    onChangeText={onChangeName}
-                >
-                </TextInput>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                    <TextInput
-                        style={{ marginTop: 10, width: '45%', backgroundColor: 'white', alignSelf: 'center', borderWidth: 0.5 }}
-                        placeholder="Enter E-mail Id"
-                        value={email}
-                        onChangeText={onChangeEmail}
-                    />
-                    <TextInput
-                        style={{ marginTop: 10, width: '45%', backgroundColor: 'white', alignSelf: 'center', borderWidth: 0.5 }}
-                        placeholder="Enter A valid mobile Number"
-                        value={mob}
-                        onChangeText={onChangeMob}
-                    />
-                </View>
-                <TextInput
-                    style={{ marginTop: 10, width: '95%', backgroundColor: 'white', alignSelf: 'center', borderWidth: 0.5 }}
-                    placeholder="Enter Project Name(3-20 chars and numbers only)"
-                    value={project}
-                    onChangeText={onChangeProject}
-                /><TextInput
-                    style={{ marginTop: 10, width: '95%', backgroundColor: 'white', alignSelf: 'center', borderWidth: 0.5 }}
-                    placeholder="Enter Task Description(3-20 chars/num/special character only)"
-                    value={task}
-                    onChangeText={onChangeTask}
+                <TextinputComponent
+                placeholder={'Enter Your Name(3-20 chars only)'}
+                value={name}
+                Width={'95%'}
+                onChangeText={(text)=>onChangeName(text)}
                 />
+             
+                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                    
+                     <TextinputComponent
+                placeholder={'Enter E-mail Id'}
+                value={email}
+                Width={'45%'}
+                onChangeText={(text)=>onChangeEmail(text)}
+                />
+                <TextinputComponent
+                placeholder={'Enter A valid mobile Number'}
+                value={mob}
+                KeyboardType={'phone-pad'}
+                Width={'45%'}
+                onChangeText={(text)=>onChangeMob(text)}
+                />
+                    
+                </View>
+                <TextinputComponent
+                placeholder={'Enter Project Name(3-20 chars and numbers only)'}
+                value={project}
+                Width={'95%'}
+                onChangeText={(text)=>onChangeProject(text)}
+                />
+                
+                <TextinputComponent
+                placeholder={'Enter Task Description(3-20 chars/num/special character only)'}
+                value={task}
+                Width={'95%'}
+                onChangeText={(text)=>onChangeTask(text)}
+                />
+                
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
                 <View style={{ marginTop: 10, width: '45%', backgroundColor: 'white', alignSelf: 'center', borderWidth: 0.5, justifyContent: 'center', }}>
@@ -158,7 +165,7 @@ const Todo = (props) => {
                         open={s_open}
                         date={s_date}
                         onConfirm={(date) => {
-                            onChangeS_date(date), onChangeS_open(false)
+                            onChangeS_open(false),onChangeS_date(date)
                         }}
                         onCancel={() => onChangeS_open(false)}
                     />
@@ -174,7 +181,7 @@ const Todo = (props) => {
                         open={t_open}
                         date={t_date}
                         onConfirm={(date) => {
-                            onChangeT_date(date), onChangeT_open(false)
+                            onChangeT_open(false),onChangeT_date(date)
                         }}
                         onCancel={() => onChangeT_open(false)}
                     />

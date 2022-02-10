@@ -21,23 +21,22 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 const TextinputComponent = (props) => {
 console.log('props', props)
     return (
-        <View>
             <TextInput
-             style={styles.inputStyle}
+             style={{ 
+                marginTop: 10, 
+                width: props.Width, 
+            backgroundColor: 'white',
+             alignSelf: 'center', 
+             borderWidth: 0.5 }}
+             keyboardType={props.KeyboardType}
              placeholder={props.placeholder}
              value={props.value}
              onChangeText={(text)=>props.onChangeText(text)}
             />
-        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    inputStyle: { 
-        marginTop: 10, 
-        width: '95%', 
-    backgroundColor: 'white',
-     alignSelf: 'center', 
-     borderWidth: 0.5 }
+
 });
 export default TextinputComponent;
